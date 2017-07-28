@@ -14,7 +14,7 @@
 		<h3>Add Member</h3>
 		<div class="well well-sm">
 			<ig-text-editor type="text" [(ngModel)]="newMember.name" [options]="{width:'100%'}" placeholder="name"></ig-text-editor>
-			<input type="button" value="Add" (click)="addRecord()" class="btn btn-default"/>
+			<input type="button" value="Add" (click)="addRecord(newMember.name); newMember.name = ''" class="btn btn-default"/>
 		</div> 
 	</div>
 </div>

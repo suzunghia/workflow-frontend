@@ -60,9 +60,10 @@ export class MemberListComponent{
 		return newMember;
 	};
 
-	addRecord() {
-		this.data.push(this.newMember);
-		this.newMember = this.createNewProduct();
+	addRecord(name: string) {
+		name = name.trim();
+		if (!name) {return;}
+		this.memberService.create(name).then(member => this.data.push(member));
 	};
 
 	deleteRecord(val) {

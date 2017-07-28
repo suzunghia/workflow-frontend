@@ -22,15 +22,14 @@ const MEMBERS: Member[] = [
 
 @Injectable()
 export class MemberService {
-    private membersUrl = 'api/members';
-    // constructor(private http: Http) { }
+    private membersUrl = 'http://localhost:8080/api/members';
+    constructor(private http: Http) { }
 
     getMembers(): Promise<Member[]> {
-        //    return this.http.get(this.membersUrl)
-        //      .toPromise()
-        //      .then(response => response.json().data as Member[])
-        //      .catch(this.handleError);
-        return Promise.resolve(MEMBERS);
+        return this.http.get(this.membersUrl)
+              .toPromise()
+              .then(response => response.json() as Member[])
+              .catch(this.handleError);
     }
     
     getMembersPro(): Member[]{
@@ -52,7 +51,7 @@ export class MemberService {
     //         .catch(this.handleError);
     //     };
     
-    // private headers = new Headers({'Content-Type': 'application/json'});
+    private headers = new Headers({'Content-Type': 'application/json'});
 
     // update(member: Member): Promise<Member> {
     //     const url = this.membersUrl + '/' +  member.id;
@@ -63,13 +62,13 @@ export class MemberService {
     //         .catch(this.handleError);
     // }
         
-    // create(name: string): Promise<Member> {
-    //     return this.http
-    //         .post(this.membersUrl, JSON.stringify({name: name}), {headers: this.headers})
-    //         .toPromise()
-    //         .then(res => res.json().data as Member)
-    //         .catch(this.handleError);
-    // }
+    create(name: string): Promise<Member> {
+        return this.http
+            .post(this.membersUrl + "?name=" + name, JSON.stringify({"name": name}), {headers: this.headers})
+            .toPromise()
+            .then(res => res.json() as Member)
+            .catch(this.handleError);
+    }
 
     // delete(id: number): Promise<void> {
     //     const url = `${this.membersUrl}/${id}`;
