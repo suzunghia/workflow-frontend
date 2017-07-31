@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
 import { Member } from 'app/model/member';
+import { AuthenService } from 'app/login/authen.service';
 
 const MEMBERS: Member[] = [
       { id: 0,  name: 'Zero' },
@@ -23,7 +24,7 @@ const MEMBERS: Member[] = [
 @Injectable()
 export class MemberService {
     private membersUrl = 'http://localhost:8080/api/members';
-    constructor(private http: Http) { }
+    constructor(private http: Http, private authenService: AuthenService) { }
 
     getMembers(): Promise<Member[]> {
         return this.http.get(this.membersUrl)
@@ -51,7 +52,8 @@ export class MemberService {
     //         .catch(this.handleError);
     //     };
     
-    private headers = new Headers({'Content-Type': 'application/json'});
+    private headers = new Headers({'Content-Type': 'application/json',
+                                   'Authorization': 'Bearer ' + this.authenService.getToken()});
 
     // update(member: Member): Promise<Member> {
     //     const url = this.membersUrl + '/' +  member.id;

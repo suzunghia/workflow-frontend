@@ -4,13 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 //Ignite UI
-import { IgGridComponent, IgTextEditorComponent } from 'igniteui-angular2'
+import { IgGridComponent, IgTextEditorComponent, IgLayoutManagerComponent } from 'igniteui-angular2'
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module'
 import { DashboardComponent }   from 'app/dashboard/dashboard.component';
 import { MemberAddComponent }      from 'app/member/add.component';
 import { MemberListComponent } from 'app/member/list.component';
+import { LoginComponent } from 'app/login/login.component';
+import { FormbuilderComponent } from 'app/formbuilder/formbuilder.component';
+import { AuthenService } from 'app/login/authen.service';
+import { CanActivateAuthGuard } from './active.authguard';
 
 @NgModule({
   declarations: [
@@ -18,9 +22,12 @@ import { MemberListComponent } from 'app/member/list.component';
     //Ignite UI
     IgGridComponent,
     IgTextEditorComponent,
+    IgLayoutManagerComponent,
     DashboardComponent,
     MemberAddComponent,
-    MemberListComponent
+    MemberListComponent,
+    LoginComponent,
+    FormbuilderComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +35,7 @@ import { MemberListComponent } from 'app/member/list.component';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthenService, CanActivateAuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
