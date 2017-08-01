@@ -1,36 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-
-
+import { Component,ComponentFactoryResolver, ViewContainerRef, OnInit, Type} from '@angular/core';
+import { Dropable } from 'app/directives/dropable';
+import { CustomComponent } from 'app/model/customcomponent';
 @Component({
   selector: 'app-root',
   templateUrl: 'formbuilder.component.html'
 })
+
 export class FormbuilderComponent {
     private layoutOptions: any;
-    
-    constructor() {        
+    constructor(private componentFactoryResolver: ComponentFactoryResolver, private viewContainerRef: ViewContainerRef) {        
 		this.layoutOptions={
 			layoutMode: "border",
 			height:"300px",
 			borderLayout: {
-				leftWidth:"10%",
-				rightWidth:"20%"
+				leftWidth:"20%",
+				rightWidth:"40%"
 			}
 		};
     }
-  
-    allowDrop(ev){
-        ev.preventDefault();
-    }
-
-    drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-    }
-
-    drop(ev) {
-        ev.preventDefault();
-        // console.log(JSON.parse(ev.dataTransfer.getData('Text')));
-        var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
+    
+    loadComponent(comp: Type<any>){
+        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(comp);
+        this.viewContainerRef.createComponent(componentFactory);
     }
 }
