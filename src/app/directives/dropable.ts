@@ -1,16 +1,13 @@
 import {Directive, HostListener, ViewContainerRef, ViewRef, ElementRef, OnInit, ComponentFactoryResolver} from '@angular/core';
-import { IgGridComponent, IgTextEditorComponent, IgLayoutManagerComponent, IgDatePickerComponent, IgDateEditorComponent } from 'igniteui-angular2'
 import { CustomComponent } from 'app/model/customcomponent';
+import { ControlComponent } from 'app/formbuilder/control.component';
 @Directive({
     selector: '[dropable]'
 })
 
 export class Dropable implements OnInit {
     // formbuider : FormbuilderComponent;
-    private Components = {
-        "text-editor": IgTextEditorComponent,
-        "date-picker": IgDatePickerComponent
-    }
+
     @HostListener('dragover', ['$event'])
     dragover(event) {
        event.preventDefault();
@@ -30,9 +27,12 @@ export class Dropable implements OnInit {
         // event.target.appendChild(document.createElement("br"));
         // this.formbuider = new FormbuilderComponent(this.componentFactoryResolver, this.viewContainerRef);
         // this.formbuider.loadComponent(IgTextEditorComponent);
-        let texinput = new CustomComponent(this.Components[data],'');
-        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(texinput.component);
-        this.viewContainerRef.createComponent(componentFactory);
+        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(ControlComponent);
+        // this.viewContainerRef.clear();
+        let componentRef =  this.viewContainerRef.createComponent(componentFactory);
+        // this.viewContainerRef.insert()
+        (<ControlComponent>componentRef.instance).data = data;
+        // componentRef.changeDetectorRef.detectChanges();
         
         // this.viewContainerRef.createComponent()
         //event.target.appendChild(document.createElement("br"));

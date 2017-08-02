@@ -1,14 +1,16 @@
-import { Component,ComponentFactoryResolver, ViewContainerRef, OnInit, Type} from '@angular/core';
-import { Dropable } from 'app/directives/dropable';
-import { CustomComponent } from 'app/model/customcomponent';
+import { Component, OnInit, ComponentFactoryResolver, ViewContainerRef, ViewChild} from '@angular/core';
+import { ControlComponent } from 'app/formbuilder/control.component';
+import { DroppableComponent } from 'app/dnd/drop';
 @Component({
-  selector: 'app-root',
+  selector: 'form-builder',
   templateUrl: 'formbuilder.component.html'
 })
 
 export class FormbuilderComponent {
     private layoutOptions: any;
-    constructor(private componentFactoryResolver: ComponentFactoryResolver, private viewContainerRef: ViewContainerRef) {        
+    components: Array<string> = [];
+    @ViewChild(DroppableComponent) droppable: DroppableComponent;
+    constructor(private componentFactoryResolver: ComponentFactoryResolver) {        
 		this.layoutOptions={
 			layoutMode: "border",
 			height:"300px",
@@ -16,11 +18,24 @@ export class FormbuilderComponent {
 				leftWidth:"20%",
 				rightWidth:"40%"
 			}
-		};
+        };
+        
+    }
+
+    ngOnChange(){
+        this.components.forEach(element => {
+            
+        });
+    }
+
+    loadComponent(event: any){
+        // console.log(event);
+        //this.viewContainerRef.element.nativeElement = document.getElementById('drop');
+        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(ControlComponent);
+        // this.viewContainerRef.clear();
+        let componentRef =  this.droppable.viewContainerRef.createComponent(componentFactory);
+        // this.viewContainerRef.insert()
+        (<ControlComponent>componentRef.instance).data = event.dragData;
     }
     
-    loadComponent(comp: Type<any>){
-        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(comp);
-        this.viewContainerRef.createComponent(componentFactory);
-    }
 }
